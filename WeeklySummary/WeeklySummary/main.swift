@@ -11,4 +11,4 @@ import EventKit
 let group = DispatchGroup();
 let s = Summarizer();
 s.requestCalendarAccess();
-sleep(3);
+sleep(10);
