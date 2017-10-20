@@ -1,10 +1,11 @@
 import EventKit
+import Foundation
 
 class Summarizer {
-    
     let eventStore = EKEventStore()
     var calendars: [EKCalendar] = []
     var events: [EKEvent] = []
+    var timeLog = [String: Double]()
     
     func loadEvents(startDate: String, endDate: String) {
         let dateFormatter = DateFormatter()
@@ -17,11 +18,19 @@ class Summarizer {
             let eventsPredicate = eventStore.predicateForEvents(withStart: start, end: end, calendars: calendars)
             
             self.events = eventStore.events(matching: eventsPredicate)
-            
-            for e in self.events {
-                print(e.title)
-                print(e.startDate)
-                print(e.endDate)
+            self.computeTimeSpent(events: self.events)
+            self.printEventTimeLog()
+        }
+    }
+    
+    func computeTimeSpent(events: [EKEvent]) {
+        for e in events {
+            let title = e.title.lowercased()
+            let timeSpent = DateUtil.elapsedHours(startDate: e.startDate, endDate: e.endDate)
+            if (timeLog[title] != nil) {
+                timeLog[title]! += timeSpent
+            } else {
+                timeLog[title] = timeSpent
             }
         }
     }
@@ -46,5 +55,11 @@ class Summarizer {
                 print("Access Denied")
             }
         })
+    }
+    
+    func printEventTimeLog() {
+        for (title, time) in timeLog {
+            print(title + ": time spent = " + String(time))
+        }
     }
 }

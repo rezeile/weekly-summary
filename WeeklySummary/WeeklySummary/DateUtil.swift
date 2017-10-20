@@ -12,4 +12,9 @@ class DateUtil {
         let day = Calendar.current.component(.day, from: date)
         return year.description + "-" +  month.description + "-" + day.description
     }
+    
+    class func elapsedHours(startDate: Date, endDate: Date) -> Double {
+        let seconds = endDate.timeIntervalSince(startDate);
+        return seconds / 3600
+    }
 }
