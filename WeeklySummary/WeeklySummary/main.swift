@@ -1,9 +1,14 @@
-/* Weekly Summary
+/* 
+ * Project: Weekly Summary
+ * -----------------------
  * Author: Eliezer Abate
  * October 19 2017 
  */
 
-import Foundation
 
-print("Hello, Eliezer!")
+import EventKit
 
+let group = DispatchGroup();
+let s = Summarizer();
+s.requestCalendarAccess();
+sleep(3);
