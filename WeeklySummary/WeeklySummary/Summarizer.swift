@@ -19,11 +19,11 @@ class Summarizer {
             
             self.events = eventStore.events(matching: eventsPredicate)
             self.computeTimeSpent(events: self.events)
-            self.printEventTimeLog()
         }
     }
     
     func computeTimeSpent(events: [EKEvent]) {
+        print(events)
         for e in events {
             let title = e.title.lowercased()
             let timeSpent = DateUtil.elapsedHours(startDate: e.startDate, endDate: e.endDate)
@@ -37,11 +37,8 @@ class Summarizer {
     
     func loadCalendars() {
         self.calendars = eventStore.calendars(for: EKEntityType.event)
-        
-        /* get start and end date */
         let startDate = DateUtil.formattedDate(date: DateUtil.getPreviousWeek())
         let endDate = DateUtil.formattedDate(date: Date())
-        
         self.loadEvents(startDate: startDate, endDate: endDate)
     }
     
@@ -57,9 +54,13 @@ class Summarizer {
         })
     }
     
-    func printEventTimeLog() {
+    func getEventTimeLog() -> String {
+        var s = ""
         for (title, time) in timeLog {
-            print(title + ": time spent = " + String(time))
+            s += title + ": time spent = " + String(time) + "\n"
         }
+        return s
     }
+    
+    
 }
