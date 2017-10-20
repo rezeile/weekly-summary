@@ -6,20 +6,34 @@ class Summarizer {
     var calendars: [EKCalendar] = []
     var events: [EKEvent] = []
     
-    func formattedDate(date: Date) -> String {
-        let year = Calendar.current.component(.year, from: date)
-        let month = Calendar.current.component(.month, from: date)
-        let day = Calendar.current.component(.day, from: date)
-        return year.description + "-" +  month.description + "-" + day.description
+    func loadEvents(startDate: String, endDate: String) {
+        let dateFormatter = DateFormatter()
+        dateFormatter.dateFormat = "yyyy-MM-dd"
+        
+        let start = dateFormatter.date(from: startDate)
+        let end = dateFormatter.date(from: endDate)
+        
+        if let start = start, let end = end {
+            let eventsPredicate = eventStore.predicateForEvents(withStart: start, end: end, calendars: calendars)
+            
+            self.events = eventStore.events(matching: eventsPredicate)
+            
+            for e in self.events {
+                print(e.title)
+                print(e.startDate)
+                print(e.endDate)
+            }
+        }
     }
     
     func loadCalendars() {
         self.calendars = eventStore.calendars(for: EKEntityType.event)
         
-        // Create a date formatter instance to use for converting a string to date
+        /* get start and end date */
+        let startDate = DateUtil.formattedDate(date: DateUtil.getPreviousWeek())
+        let endDate = DateUtil.formattedDate(date: Date())
         
-        // Create start and end date instances
-        print(self.formattedDate(date: Date()))
+        self.loadEvents(startDate: startDate, endDate: endDate)
     }
     
     func requestCalendarAccess() {

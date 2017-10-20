@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		473EEE011F997088005EE040 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 473EEE001F997088005EE040 /* main.swift */; };
 		473EEE0A1F9973C2005EE040 /* Summarizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 473EEE091F9973C2005EE040 /* Summarizer.swift */; };
+		47A0FD1D1F998A0C00D19042 /* DateUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47A0FD1C1F998A0C00D19042 /* DateUtil.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -27,6 +28,7 @@
 		473EEDFD1F997088005EE040 /* WeeklySummary */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = WeeklySummary; sourceTree = BUILT_PRODUCTS_DIR; };
 		473EEE001F997088005EE040 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
 		473EEE091F9973C2005EE040 /* Summarizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Summarizer.swift; sourceTree = "<group>"; };
+		47A0FD1C1F998A0C00D19042 /* DateUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateUtil.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -60,6 +62,7 @@
 			isa = PBXGroup;
 			children = (
 				473EEE001F997088005EE040 /* main.swift */,
+				47A0FD1C1F998A0C00D19042 /* DateUtil.swift */,
 				473EEE091F9973C2005EE040 /* Summarizer.swift */,
 			);
 			path = WeeklySummary;
@@ -123,6 +126,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				47A0FD1D1F998A0C00D19042 /* DateUtil.swift in Sources */,
 				473EEE0A1F9973C2005EE040 /* Summarizer.swift in Sources */,
 				473EEE011F997088005EE040 /* main.swift in Sources */,
 			);
@@ -254,6 +258,7 @@
 				473EEE061F997088005EE040 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
