@@ -3,22 +3,57 @@ import Foundation
 
 class Summarizer {
     let eventStore = EKEventStore()
-    var addr = String()
     var calendars: [EKCalendar] = []
     var events: [EKEvent] = []
-    var timeLog = [String: Double]()
+    var config: Config = Config()
+    var tasks = Set<Task>()
     
-    /* TODO -- this should come from the FileManager */
-    var curPath = "/Users/elie/programming/weekly-summary/WeeklySummary/WeeklySummary/"
+    init(config: Config) {
+        self.config = config
+    }
     
-    /* TODO this should come from a config file */
-//    var mainEvents: Set<String> = ["Problem Solving", "Guitar", "Meditation",
-//                                   "Vocabulary", "Mental Math", "Stretching",
-//                                   "Reading", "Programming Project"]
+    func summarize() {
+        self.eventStore.requestAccess(
+            to: EKEntityType.event,
+            completion:self.summarizeHandler
+        )
+    }
     
-    func loadEvents(startDate: String, endDate: String) {
+    private func summarizeHandler(accessGranted: Bool, error: Error?) {
+        if (accessGranted == true) {
+            self.calendars = self.eventStore.calendars(for: EKEntityType.event)
+            let startDate = DateUtil.formattedDate(date: DateUtil.getPreviousWeek())
+            let endDate = DateUtil.formattedDate(date: Date())
+            self.loadEvents(startDate: startDate, endDate: endDate)
+            self.genTasks()
+            Formatter.writeContentToFile(config: self.config, tasks: self.tasks)
+            EmailUtil.send(config: self.config)
+        } else {
+            print("Calendar Access Denied.");
+        }
+    }
+    
+    private func genTasks() {
+        var eventTitles = Set<String>()
+        var task: Task
+        for e in self.events {
+            let title = e.title.lowercased()
+            let timeSpent = DateUtil.elapsedHours(startDate: e.startDate, endDate: e.endDate)
+            if (eventTitles.contains(title)) {
+                task = self.tasks.remove(Task(title: title, timeSpent: 0.0))!
+                task.addTimeSpent(timeSpent: timeSpent)
+            } else {
+                eventTitles.insert(title)
+                task = Task(title: title,timeSpent: timeSpent)
+                self.tasks.insert(task)
+            }
+            task.updateFrequency(date: e.endDate)
+        }
+    }
+    
+    private func loadEvents(startDate: String, endDate: String) {
         let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd"
+        dateFormatter.dateFormat = DateUtil.getDateFormat()
         
         let start = dateFormatter.date(from: startDate)
         let end = dateFormatter.date(from: endDate)
@@ -27,83 +62,5 @@ class Summarizer {
             let eventsPredicate = eventStore.predicateForEvents(withStart: start, end: end, calendars: calendars)
             self.events = eventStore.events(matching: eventsPredicate)
         }
-        self.computeTimeSpent(events: self.events)
-        let subject = "Subject: " + "Timelog: Week of " + DateUtil.getStringMonthAndDay(date: Date()) + "\n"
-        self.writeContentToFile(subject: subject)
-        self.updateEmailMetaData()
-        EmailUtil.send()
     }
-    
-    func updateEmailMetaData () {
-        /* TODO -- this should also come from a config file */
-        let emailpath = self.curPath + "email.txt"
-        let shellpath = self.curPath + "email.sh"
-        let from = "mail@eliezerabate.com"
-        let to = "eliezerabate@gmail.com"
-        let script = "#!/bin/bash\n" + "sendmail -f " + from + " " + to + " < " + emailpath
-        
-        do {
-            try script.write(toFile: shellpath, atomically: false, encoding: String.Encoding.utf8)
-        }
-        catch let error as NSError {
-            print("Ooops! Something went wrong: \(error)")
-        }
-    }
-    
-    func computeTimeSpent(events: [EKEvent]) {
-        for e in events {
-            let title = e.title.lowercased()
-            let timeSpent = DateUtil.elapsedHours(startDate: e.startDate, endDate: e.endDate)
-            if (timeLog[title] != nil) {
-                timeLog[title]! += timeSpent
-            } else {
-                timeLog[title] = timeSpent
-            }
-        }
-    }
-    
-    func writeContentToFile(subject: String) {
-        let message = subject + self.getEventTimeLog()
-        let path = self.curPath + "email.txt"
-        do {
-            print(message)
-            try message.write(toFile: path, atomically: false, encoding: String.Encoding.utf8)
-        }
-        catch let error as NSError {
-            print("Ooops! Something went wrong: \(error)")
-        }
-    }
-    
-    func loadCalendars() {
-        self.calendars = eventStore.calendars(for: EKEntityType.event)
-        //self.addr = StringParser.getOwnerAddress(desc: self.calendars[0].source.description)
-        let startDate = DateUtil.formattedDate(date: DateUtil.getPreviousWeek())
-        let endDate = DateUtil.formattedDate(date: Date())
-        self.loadEvents(startDate: startDate, endDate: endDate)
-    }
-    
-    func requestCalendarAccess() {
-        eventStore.requestAccess(to: EKEntityType.event, completion:{
-            (accessGranted: Bool, error: Error?) in
-            
-            if accessGranted == true {
-                self.loadCalendars()
-            } else {
-                print("Calendar Access Denied")
-            }
-        })
-    }
-    
-    func getEventTimeLog() -> String {
-        let timeLog = self.timeLog.sorted(by: {
-            return $0.value > $1.value
-        })
-        var s = ""
-        for (title, time) in timeLog {
-            s += title + ": time spent = " + String(time) + "\n"
-        }
-        return s
-    }
-    
-    
 }

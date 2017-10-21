@@ -1,14 +1,21 @@
 /* 
- * Project: Weekly Summary
- * -----------------------
+ *        Weekly Summary
+ * ------------------------------
+ * Mac agent that wakes up
+ * every sunday to summarize
+ * and log your weekly time 
+ * expenditure and send it to
+ * your email
+ *
  * Author: Eliezer Abate
- * October 19 2017 
+ * Last Updated: October 21, 2017
+ *
  */
 
+import AppKit
+import Foundation
 
-import EventKit
-
-let group = DispatchGroup();
-let s = Summarizer();
-s.requestCalendarAccess();
+/* Entry Point */
+let config = Config()
+Summarizer(config: config).summarize()
 sleep(10);

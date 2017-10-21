@@ -6,6 +6,8 @@ class DateUtil {
                      "July", "August", "September",
                      "October", "November", "December"]
     
+    static let daysOfWeek = [1: "S", 2: "M", 3: "T", 4: "W", 5: "T", 6: "F", 7: "S"]
+    
     
     static func getPreviousWeek() -> Date {
         return (Calendar.current as NSCalendar).date(byAdding: .day, value: -7, to: Date(), options: [])!
@@ -28,6 +30,15 @@ class DateUtil {
     static func elapsedHours(startDate: Date, endDate: Date) -> Double {
         let seconds = endDate.timeIntervalSince(startDate);
         return seconds / 3600
+    }
+    
+    static func getDayOfWeek(date: Date) -> (Int,String) {
+        let day = Calendar.current.component(.weekday, from: date)
+        return (day, daysOfWeek[day]!)
+    }
+    
+    static func getDateFormat() -> String {
+        return "yyyy-MM-dd"
     }
     
 }
