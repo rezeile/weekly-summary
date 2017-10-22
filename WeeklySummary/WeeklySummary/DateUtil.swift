@@ -10,8 +10,8 @@ class DateUtil {
     
     
     static func getPreviousWeek() -> Date {
-        return (Calendar.current as NSCalendar).date(byAdding: .day, value: -7, to: Date(), options: [])!
-        
+        let date: Date = (Calendar.current as NSCalendar).date(byAdding: .day, value: -7, to: Date(), options: [])!
+        return date.addingTimeInterval(70.0)
     }
     
     static func formattedDate(date: Date) -> String {
