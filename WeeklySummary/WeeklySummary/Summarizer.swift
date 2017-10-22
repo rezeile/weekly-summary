@@ -5,7 +5,7 @@ class Summarizer {
     let eventStore = EKEventStore()
     var calendars: [EKCalendar] = []
     var events: [EKEvent] = []
-    var config: Config = Config()
+    var config: Config
     var tasks = Set<Task>()
     
     init(config: Config) {
@@ -26,7 +26,7 @@ class Summarizer {
             let endDate = DateUtil.formattedDate(date: Date())
             self.loadEvents(startDate: startDate, endDate: endDate)
             self.genTasks()
-            Formatter.writeContentToFile(config: self.config, tasks: self.tasks)
+            Formatter.writeContentToFile(config: self.config, tasks: self.tasks, date: DateUtil.getPreviousWeek())
             EmailUtil.send(config: self.config)
         } else {
             print("Calendar Access Denied.");
@@ -45,9 +45,10 @@ class Summarizer {
             } else {
                 eventTitles.insert(title)
                 task = Task(title: title,timeSpent: timeSpent)
-                self.tasks.insert(task)
+                
             }
             task.updateFrequency(date: e.endDate)
+            self.tasks.insert(task)
         }
     }
     

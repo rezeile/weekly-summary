@@ -15,7 +15,5 @@
 import AppKit
 import Foundation
 
-/* Entry Point */
-let config = Config()
-Summarizer(config: config).summarize()
+Summarizer(config: Config()).summarize()
 sleep(10);

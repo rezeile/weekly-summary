@@ -40,7 +40,11 @@ class Task: Equatable, Hashable {
     }
     
     func getTimeSpent() -> String {
-        return String(format: "%.2f", timeSpent)
+        let hour = Int(timeSpent)
+        let min = Int((timeSpent - Double(hour))*60.0)
+        if hour == 0 {return String(format: "%d mins",min)}
+        if min == 0 { return String(format:"%d:00 hours",hour)}
+        return String(format: "%d:%d hours",hour,min)
     }
     
     func updateFrequency(date: Date) {
@@ -52,7 +56,11 @@ class Task: Equatable, Hashable {
     
     func getFrequency() -> String {
         let _freq: String = String(self.frequency)
-        return _freq
+        return "[" + _freq + "]"
+    }
+    
+    func getAverage() -> String {
+        return ""
     }
     
     static func getBaseTasks() -> Set<String> {

@@ -2,9 +2,9 @@ import Foundation
 
 class DateUtil {
     static let months = ["January", "February", "March",
-                     "April", "May", "June",
-                     "July", "August", "September",
-                     "October", "November", "December"]
+                         "April", "May", "June",
+                         "July", "August", "September",
+                         "October", "November", "December"]
     
     static let daysOfWeek = [1: "S", 2: "M", 3: "T", 4: "W", 5: "T", 6: "F", 7: "S"]
     
