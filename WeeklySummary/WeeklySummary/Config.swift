@@ -1,6 +1,7 @@
 import Foundation
 
 class Config {
+    private var baseTasks: [String] = []
     private var launchPath: String = String()
     private var launchArguments: [String] = []
     private var shellPath: String = String()
@@ -25,6 +26,10 @@ class Config {
         return self.shellPath
     }
     
+    func getBaseTasks() -> [String] {
+        return self.baseTasks
+    }
+    
     func getEmailPath() -> String {
         return self.emailPath
     }
@@ -43,6 +48,7 @@ class Config {
                 let data = try Data(contentsOf: file)
                 let json = try JSONSerialization.jsonObject(with: data, options: [])
                 if let object = json as? [String: Any] {
+                    self.baseTasks = object["baseTasks"]! as! [String]
                     self.launchPath = String(describing: object["launchPath"]!)
                     self.launchArguments = object["launchArguments"]! as! [String]
                     self.shellPath = String(describing: object["shellPath"]!)

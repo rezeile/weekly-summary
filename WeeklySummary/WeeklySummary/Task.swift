@@ -1,32 +1,16 @@
 import Foundation
 
-private class BaseTasks {
-    var tasks: Set<String> = Set<String>()
-    
-    init() {
-        self.parseBaseTasks()
-    }
-    
-    func parseBaseTasks() {
-        // TODO (#1) read from a file called tasks.js
-    }
-    
-    func getTasks() -> Set<String> {
-        return Set<String>(tasks)
-    }
-    
-}
-
 class Task: Equatable, Hashable {
     var title: String = String()
     private var timeSpent: Double = Double()
     private var frequency: String = String()
-    fileprivate static var baseTasks: BaseTasks? = nil
+    private var baseTask: Bool
     
     init(title: String, timeSpent: Double) {
         self.title = title
         self.timeSpent = timeSpent
         self.frequency = "-------"
+        self.baseTask = false
     }
     
     var hashValue: Int {
@@ -40,11 +24,11 @@ class Task: Equatable, Hashable {
     }
     
     func getTimeSpent() -> String {
-        let hour = Int(timeSpent)
-        let min = Int((timeSpent - Double(hour))*60.0)
-        if hour == 0 {return String(format: "%d mins",min)}
-        if min == 0 { return String(format:"%d:00 hours",hour)}
-        return String(format: "%d:%d hours",hour,min)
+        return Formatter.getFormattedTime(time: self.timeSpent)
+    }
+    
+    func getTimeSpentRaw() -> Double {
+        return self.timeSpent
     }
     
     func updateFrequency(date: Date) {
@@ -60,17 +44,21 @@ class Task: Equatable, Hashable {
     }
     
     func getAverage() -> String {
-        return ""
-    }
-    
-    static func getBaseTasks() -> Set<String> {
-        return (self.baseTasks?.getTasks())!
-    }
-    
-    static func genBaseTasks() {
-        if baseTasks == nil {
-            baseTasks = BaseTasks()
+        var count = 0
+        for c in self.frequency.characters {
+            if c != "-" { count += 1 }
         }
+        let den = count == 0 ? 1.0 : Double(count)
+        let average: Double =  self.getTimeSpentRaw() / den
+        return Formatter.getFormattedTime(time: average) + "/day"
+    }
+    
+    func setAsBaseTask() {
+        self.baseTask = true
+    }
+    
+    func isBaseTask() -> Bool {
+        return self.baseTask
     }
 }
 

@@ -26,7 +26,7 @@ class Summarizer {
             let endDate = DateUtil.formattedDate(date: Date())
             self.loadEvents(startDate: startDate, endDate: endDate)
             self.genTasks()
-            Formatter.writeContentToFile(config: self.config, tasks: self.tasks, date: DateUtil.getPreviousWeek())
+            Formatter.writeContentToFile(config: self.config, tasks: self.tasks, date: Date())
             EmailUtil.send(config: self.config)
         } else {
             print("Calendar Access Denied.");
@@ -36,6 +36,7 @@ class Summarizer {
     private func genTasks() {
         var eventTitles = Set<String>()
         var task: Task
+        let baseTasks = Set(self.config.getBaseTasks())
         for e in self.events {
             let title = e.title.lowercased()
             let timeSpent = DateUtil.elapsedHours(startDate: e.startDate, endDate: e.endDate)
@@ -47,6 +48,7 @@ class Summarizer {
                 task = Task(title: title,timeSpent: timeSpent)
                 
             }
+            if baseTasks.contains(title) { task.setAsBaseTask() }
             task.updateFrequency(date: e.endDate)
             self.tasks.insert(task)
         }
