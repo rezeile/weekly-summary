@@ -1,0 +1,29 @@
+MIME-Version: 1.0
+Content-Type: text/html
+Content-Disposition: inline
+Subject: Timelog for Week Ending on October 21
+<html>
+<body style="background-color: #eee">
+<pre style="font: monospace; font-size: 12pt">
+<b>-----------------------------------------------------------------------
+  Task                     | Time Spent  | Frequency | Average
+-----------------------------------------------------------------------
+</b><b>  programming project        6:30 hours    [----TF-]   3:15 hours/day      </b>
+-----------------------------------------------------------------------
+  stripe onsite interview    5:00 hours    [-M-----]   5:00 hours/day      
+-----------------------------------------------------------------------
+  dropbox coding challenge   1:00 hour     [S------]   1:00 hour/day       
+-----------------------------------------------------------------------
+  airbnb challenge           1:00 hour     [S------]   1:00 hour/day       
+-----------------------------------------------------------------------
+  stripe preparation         1:00 hour     [S------]   1:00 hour/day       
+-----------------------------------------------------------------------
+  palantir phone call        30   mins     [--T----]   30   mins/day       
+-----------------------------------------------------------------------
+  two sigma phone call       30   mins     [----T--]   30   mins/day       
+-----------------------------------------------------------------------
+  jon graybill phonecall     30   mins     [---W---]   30   mins/day       
+-----------------------------------------------------------------------
+</pre>
+</body>
+</html>

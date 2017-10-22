@@ -8,6 +8,13 @@
 
 /* Begin PBXBuildFile section */
 		47C74E491F9D07C400C973E8 /* main.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C74E481F9D07C400C973E8 /* main.swift */; };
+		47C74E501F9D084900C973E8 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C74E4F1F9D084900C973E8 /* Config.swift */; };
+		47C74E521F9D085800C973E8 /* DateUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C74E511F9D085800C973E8 /* DateUtil.swift */; };
+		47C74E541F9D086100C973E8 /* EmailUtil.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C74E531F9D086100C973E8 /* EmailUtil.swift */; };
+		47C74E561F9D086F00C973E8 /* Formatter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C74E551F9D086F00C973E8 /* Formatter.swift */; };
+		47C74E581F9D088900C973E8 /* Summarizer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C74E571F9D088900C973E8 /* Summarizer.swift */; };
+		47C74E5A1F9D089600C973E8 /* Task.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C74E591F9D089600C973E8 /* Task.swift */; };
+		47C74E5E1F9D0C4700C973E8 /* Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 47C74E5D1F9D0C4700C973E8 /* Test.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -25,6 +32,13 @@
 /* Begin PBXFileReference section */
 		47C74E451F9D07C400C973E8 /* weekly-summary */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = "weekly-summary"; sourceTree = BUILT_PRODUCTS_DIR; };
 		47C74E481F9D07C400C973E8 /* main.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = main.swift; sourceTree = "<group>"; };
+		47C74E4F1F9D084900C973E8 /* Config.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
+		47C74E511F9D085800C973E8 /* DateUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DateUtil.swift; sourceTree = "<group>"; };
+		47C74E531F9D086100C973E8 /* EmailUtil.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmailUtil.swift; sourceTree = "<group>"; };
+		47C74E551F9D086F00C973E8 /* Formatter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Formatter.swift; sourceTree = "<group>"; };
+		47C74E571F9D088900C973E8 /* Summarizer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Summarizer.swift; sourceTree = "<group>"; };
+		47C74E591F9D089600C973E8 /* Task.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Task.swift; sourceTree = "<group>"; };
+		47C74E5D1F9D0C4700C973E8 /* Test.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Test.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -58,6 +72,13 @@
 			isa = PBXGroup;
 			children = (
 				47C74E481F9D07C400C973E8 /* main.swift */,
+				47C74E551F9D086F00C973E8 /* Formatter.swift */,
+				47C74E511F9D085800C973E8 /* DateUtil.swift */,
+				47C74E571F9D088900C973E8 /* Summarizer.swift */,
+				47C74E531F9D086100C973E8 /* EmailUtil.swift */,
+				47C74E5D1F9D0C4700C973E8 /* Test.swift */,
+				47C74E591F9D089600C973E8 /* Task.swift */,
+				47C74E4F1F9D084900C973E8 /* Config.swift */,
 			);
 			path = "weekly-summary";
 			sourceTree = "<group>";
@@ -120,7 +141,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				47C74E541F9D086100C973E8 /* EmailUtil.swift in Sources */,
+				47C74E521F9D085800C973E8 /* DateUtil.swift in Sources */,
+				47C74E561F9D086F00C973E8 /* Formatter.swift in Sources */,
 				47C74E491F9D07C400C973E8 /* main.swift in Sources */,
+				47C74E581F9D088900C973E8 /* Summarizer.swift in Sources */,
+				47C74E5E1F9D0C4700C973E8 /* Test.swift in Sources */,
+				47C74E5A1F9D089600C973E8 /* Task.swift in Sources */,
+				47C74E501F9D084900C973E8 /* Config.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -250,6 +278,7 @@
 				47C74E4E1F9D07C400C973E8 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
