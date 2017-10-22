@@ -47,6 +47,11 @@ class DateUtil {
         return (day, daysOfWeek[day]!)
     }
     
+    static func getWeekOfYear(date: Date) -> String {
+        let weekOfYear = Calendar.current.component(.weekOfYear, from: date)
+        return String(weekOfYear)
+    }
+    
     static func getDateFormat() -> String {
         return "yyyy-MM-dd"
     }

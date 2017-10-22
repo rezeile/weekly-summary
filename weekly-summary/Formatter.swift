@@ -49,7 +49,10 @@ class Formatter {
     }
     
     private static func genSubjectHeading(date: Date) -> String {
-        return "Subject: Timelog for Week Ending on " + DateUtil.getStringMonthAndDay(date: date) + "\n"
+        let weekNo = "Timelog " + DateUtil.getWeekOfYear(date: date) + ": "
+        let content = "Week ending on Saturday "
+        let endDate = DateUtil.getStringMonthAndDay(date: date)
+        return "Subject: " + weekNo + content + endDate + "\n"
     }
     
     private static func formatTask(task: Task) -> String {
@@ -68,7 +71,7 @@ class Formatter {
                "Content-Disposition: inline\n" +
                 genSubjectHeading(date: date) +
                "<html>\n" +
-               "<body style=\"background-color: #eee\">\n" +
+               "<body style=\"background-color: #4fe0cc\">\n" +
                "<pre style=\"font: monospace; font-size: 12pt\">\n"
     }
     
