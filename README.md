@@ -30,7 +30,7 @@
 
 At the end of `main.cf` add the following lines:
 
-```
+```cf
 relayhost = mail.bobjones.com:26
 smtp_sasl_auth_enable = yes
 smtp_sasl_password_maps = hash:/etc/postfix/sasl_passwd
@@ -65,51 +65,35 @@ sudo launchctl start org.postfix.master
 
 **[Back to top](#table-of-contents)**
 
-### Daemon config file
+### Writing a plist file
 
 A root module begins with a root component that defines the base element for the entire application, with a routing outlet defined, example shown using `ui-view` from `ui-router`.
 
-```js
-// app.component.js
-export const AppComponent = {
-  template: `
-    <header>
-        Hello world
-    </header>
-    <div>
-        <div ui-view></div>
-    </div>
-    <footer>
-        Copyright MyApp 2016.
-    </footer>
-  `
-};
-```
-
-A root module is then created, with `AppComponent` imported and registered with `.component('app', AppComponent)`. Further imports for submodules (component and common modules) are made to include all components relevant for the application. You'll notice styles are also being imported here, we'll come onto this in later chapters in this guide.
-
-```js
-// app.module.js
-import angular from 'angular';
-import uiRouter from 'angular-ui-router';
-import { AppComponent } from './app.component';
-import { ComponentsModule } from './components/components.module';
-import { CommonModule } from './common/common.module';
-import './app.scss';
-
-export const AppModule = angular
-  .module('app', [
-    ComponentsModule,
-    CommonModule,
-    uiRouter
-  ])
-  .component('app', AppComponent)
-  .name;
+```xml
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+  <dict>
+    <key>Label</key>
+    <string>local.weeklysummary.plist</string>
+    <key>StartCalendarInterval</key>
+    <dict>
+      <key>Weekday</key>
+      <integer>6</integer>
+      <key>Hour</key>
+      <integer>23</integer>
+      <key>Minute</key>
+      <integer>59</integer>
+    </dict>
+    <key>Program</key>
+    <string>/Path/to/executable</string>
+  </dict>
+</plist>
 ```
 
 **[Back to top](#table-of-contents)**
 
-### Writing a plist file
+### Daemon config file
 
 Due to the fact directives support most of what `.component()` does (template directives were the original component), I'm recommending limiting your directive Object definitions to only these properties, to avoid using directives incorrectly:
 
