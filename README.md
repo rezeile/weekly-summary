@@ -20,11 +20,13 @@
 
 # Setup
 
-`weekly-summary` is a daemon and thus does not involve any user interaction. Nonetheless it does require initial configuration. In particular, it needs to know where to email the summarised timelogs, where to store the email text file on the file system, and when the program itself should run (i.e. weekly). For illustrative purposes, the rest of this document will refer to a fictionalized mail server `mail.bobjones.com` and email address `mail@bobjones.com`.
+`weekly-summary` is a daemon that does not require any user interaction. However it does require a small amount of initial configuration. In particular, it needs to know where to email the summarised timelogs, where to store the email text file on the file system, and how frequently itshould run (i.e. weekly,daily,hourly, etc ...). 
+
+For illustrative purposes, the rest of this document will refer to a fictionalized mail server `mail.bobjones.com` and email address `mail@bobjones.com`.
 
 ### Postfix mail server
 
-[Postfix](http://www.postfix.org/) is a mail server that is natively integrated to the Mac OSX operating system. We will first configure our outgoing mail server which will be used by the `sendmail` utility (which is part of an a script written by the daemon itself). To configure the mail server, we will execute the following on the command line the following:
+[Postfix](http://www.postfix.org/) is a mail server that is natively integrated to the Mac OSX operating system. We will first configure our outgoing mail server which will be used by the `sendmail` utility (which will be invoked as part of a script written by the daemon itself). To configure the mail server, we will execute the following on the command line:
 
 `sudo vim /etc/postfix/main.cf`
 
