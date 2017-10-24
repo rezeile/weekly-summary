@@ -21,7 +21,7 @@
 
 ## Setup
 
-`weekly-summary` is a daemon that does not require any user interaction. However it does require a small amount of initial configuration. In particular, it needs to know where to email the summarised timelogs, where to store the email text file on the file system, and how frequently itshould run (i.e. weekly,daily,hourly, etc ...). 
+`weekly-summary` is a daemon that does not require any user interaction. However it does require a small amount of initial configuration. In particular, it needs to know where to email the summarized timelogs, where to store the email text on the file system, and how frequently it should run (i.e. weekly,daily,hourly, etc ...). 
 
 For illustrative purposes, the rest of this document will refer to a fictionalized mail server `mail.bobjones.com` and email address `mail@bobjones.com`.
 
