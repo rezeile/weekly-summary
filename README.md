@@ -14,8 +14,8 @@
 
 1. [Setup](#setup)
     1. [Postfix mail server](#postfix-mail-server)
-    1. [Daemon config file](#daemon-config-file)
     1. [Writing a plist file](#writing-a-plist-file)
+    1. [Daemon configuration file](#daemon-configuration-file)
 1. [Example](#example)
 
 # Setup
@@ -124,9 +124,9 @@ Finally the `<key>Program</key>` last tag defines where the actual executable pr
 
 **[Back to top](#table-of-contents)**
 
-### Daemon config file
+### Daemon configuration file
 
-Due to the fact directives support most of what `.component()` does (template directives were the original component), I'm recommending limiting your directive Object definitions to only these properties, to avoid using directives incorrectly:
+Finally we will need a configuration file called `config.json` that will have several properties (JSON keys) that the daemon program will require. A description of the different properties is given below. 
 
 | Property Name | Description | Example
 |---|---|---|
@@ -137,6 +137,21 @@ Due to the fact directives support most of what `.component()` does (template di
 | destEmailAddress | destination email address | `bobjones@gmail.com` |
 | launchArguments | arguments to pass to `scriptPath` | `"Users/bob/weekly-summary/scripts/email.sh"` |
 | baseTasks | recurring weekly tasks | `["gym","programming","basketball"]` |
+
+Here's an example `config.json` entry for Bob Jones:
+
+```
+{
+    "launchPath": "/bin/bash",
+    "emailBodyPath": "Users/bob/weekly-summary/email.txt",
+    "scriptPath": "Users/bob/weekly-summary/scripts/email.sh",
+    "sourceEmailAddress": "mail@bobjones.com",
+    "destEmailAddress": "bobjones@gmail.com",
+    "launchArguments": ["Users/bob/weekly-summary/scripts/email.sh""],
+    "baseTasks": ["gym","programming","basketball"]
+}
+
+```
 
 **[Back to top](#table-of-contents)**
 
