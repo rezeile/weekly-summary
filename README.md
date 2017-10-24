@@ -8,23 +8,23 @@
 
 ---
 
-<img src="https://github.com/rezeile/weekly-summary/blob/master/img/email_00.png">
-
 ## Table of Contents
 
 1. [Setup](#setup)
     1. [Postfix mail server](#postfix-mail-server)
-    1. [Daemon config file](#daemon-config-file)
     1. [Writing a plist file](#writing-a-plist-file)
-1. [Example](#example)
+    1. [Daemon configuration file](#daemon-configuration-file)
+1. [Emailed timelog example](#emailed-timelog-example)
 
-# Setup
+## Setup
 
-`weekly-summary` is a daemon and thus does not involve any user interaction. Nonetheless it does require initial configuration. In particular, it needs to know where to email the summarised timelogs, where to store the email text file on the file system, and when the program itself should run (i.e. weekly). For illustrative purposes, the rest of this document will refer to a fictionalized mail server `mail.bobjones.com` and email address `mail@bobjones.com`.
+`weekly-summary` is a daemon that does not require any user interaction. However it does require a small amount of initial configuration. In particular, it needs to know where to email the summarised timelogs, where to store the email text file on the file system, and how frequently itshould run (i.e. weekly,daily,hourly, etc ...). 
+
+For illustrative purposes, the rest of this document will refer to a fictionalized mail server `mail.bobjones.com` and email address `mail@bobjones.com`.
 
 ### Postfix mail server
 
-[Postfix](http://www.postfix.org/) is a mail server that is natively integrated to the Mac OSX operating system. We will first configure our outgoing mail server which will be used by the `sendmail` utility (which is part of an a script written by the daemon itself). To configure the mail server, we will execute the following on the command line the following:
+[Postfix](http://www.postfix.org/) is a mail server that is natively integrated to the Mac OSX operating system. We will first configure our outgoing mail server which will be used by the `sendmail` utility (which will be invoked as part of a script written by the daemon itself). To configure the mail server, we will execute the following on the command line:
 
 `sudo vim /etc/postfix/main.cf`
 
@@ -41,7 +41,11 @@ smtp_use_tls = yes
 
 The `relayhost` above contains the name of the mail server and the port number at which it is listening. In the example above we have a mail server that already exists at `mail.bobjones.com`. If you don't have a domain at which you have a mail server you can use the `smtp.gmail.com` if you own a gmail account. For other email hosts, check their configuration settings.
 
-The second important field from the configuration file is `smtp_sasl_password_maps = hash:/etc/postfix/sasl_passwd`. This field tells our mail server where our user credentials are encryptically stored: `/etc/postfix/sasl_passwd`. 
+The second important field from the configuration file is:
+
+`smtp_sasl_password_maps = hash:/etc/postfix/sasl_passwd`. 
+
+This field tells our mail server where our user credentials are encryptically stored: `/etc/postfix/sasl_passwd`. 
 
 So we will create the file by running the following command:
 
@@ -55,7 +59,7 @@ Here `mail.bobjones.com:26` is the name of the `relayhost` which is defined in `
 
 We will want to restrict access to the `sasl_passwd` file by running the following `sudo chmod 600 /etc/postfix/sasl_passwd`
 
-Finally we will want to create [postmap](http://www.postfix.org/postmap.1.html) lookup table by and restart our postfix mail server daemon by running the following:
+Finally we will want to create [postmap](http://www.postfix.org/postmap.1.html) lookup table and restart our postfix mail server daemon by running the following:
 
 ```
 sudo postmap /etc/postfix/sasl_passwd
@@ -67,7 +71,9 @@ sudo launchctl start org.postfix.master
 
 ### Writing a plist file
 
-A root module begins with a root component that defines the base element for the entire application, with a routing outlet defined, example shown using `ui-view` from `ui-router`.
+A mac daemon is controlled by service management framework [`launchd`](https://en.wikipedia.org/wiki/Launchd). (To view a list of system and user daemons managed by `launchd` run `launchctl list`.)
+
+A property list (extension `.plist`) is an xml file that configures a `launchd` daemon. For our example the property list located in the same directory as the readme is called `local.weeklysummary.plist`. This file should be placed at the following directory `~/Library/LaunchAgents` on your Mac.
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -91,11 +97,42 @@ A root module begins with a root component that defines the base element for the
 </plist>
 ```
 
+We will describe some of the key elements of the property file from above. 
+
+```
+<key>Label</key>
+<string>local.weeklysummary.plist</string>
+```
+
+The key `<key>Label</key>` describes the name of the property list which should be unique among system daemons.
+
+```
+<key>StartCalendarInterval</key>
+<dict>
+      <key>Weekday</key>
+      <integer>6</integer>
+      <key>Hour</key>
+      <integer>23</integer>
+      <key>Minute</key>
+      <integer>59</integer>
+    </dict>
+```
+
+The second key defines a calendar interval inside a `<dict>...</dict>` which instructs `launchd` when to execute the program. `6` means the sixth day of the week (Saturday), `23` denotes the 23 hour of the day (i.e. 11pm), and `59` denotes the 59th minute of the the hour. Thus this daemon will execute every saturday at 11:59pm.
+
+```
+<key>Program</key>
+<string>/Path/to/executable</string>
+```
+
+Lastly the `<key>Program</key>` last tag defines where the actual executable program is located.
+
+
 **[Back to top](#table-of-contents)**
 
-### Daemon config file
+### Daemon configuration file
 
-Due to the fact directives support most of what `.component()` does (template directives were the original component), I'm recommending limiting your directive Object definitions to only these properties, to avoid using directives incorrectly:
+We will also need a configuration file called `config.json` that will have several properties (JSON keys) that the daemon program will require. This config.json file should be placed in the same location as the daemon executable which is described int the `plist` file above under the `<key>Program</key>` tag. A description of the different properties is given below. 
 
 | Property Name | Description | Example
 |---|---|---|
@@ -107,18 +144,26 @@ Due to the fact directives support most of what `.component()` does (template di
 | launchArguments | arguments to pass to `scriptPath` | `"Users/bob/weekly-summary/scripts/email.sh"` |
 | baseTasks | recurring weekly tasks | `["gym","programming","basketball"]` |
 
+Here's an example `config.json` entry for Bob Jones:
+
+```
+{
+    "launchPath": "/bin/bash",
+    "emailBodyPath": "Users/bob/weekly-summary/email.txt",
+    "scriptPath": "Users/bob/weekly-summary/scripts/email.sh",
+    "sourceEmailAddress": "mail@bobjones.com",
+    "destEmailAddress": "bobjones@gmail.com",
+    "launchArguments": ["Users/bob/weekly-summary/scripts/email.sh""],
+    "baseTasks": ["gym","programming","basketball"]
+}
+
+```
+
 **[Back to top](#table-of-contents)**
 
-# Example
-* Use `ui-router` [latest alpha](https://github.com/angular-ui/ui-router) (see the Readme) if you want to support component-routing
-  * Otherwise you're stuck with `template: '<component>'` and no `bindings`/resolve mapping
-* Consider preloading templates into `$templateCache` with `angular-templates` or `ngtemplate-loader`
-  * [Gulp version](https://www.npmjs.com/package/gulp-angular-templatecache)
-  * [Grunt version](https://www.npmjs.com/package/grunt-angular-templates)
-  * [Webpack version](https://github.com/WearyMonkey/ngtemplate-loader)
-* Consider using [Webpack](https://webpack.github.io/) for compiling your ES2015 code and styles
-* Use [ngAnnotate](https://github.com/olov/ng-annotate) to automatically annotate `$inject` properties
-* How to use [ngAnnotate with ES6](https://www.timroes.de/2015/07/29/using-ecmascript-6-es6-with-angularjs-1-x/#ng-annotate)
+## Emailed timelog example
+
+<img src="https://github.com/rezeile/weekly-summary/blob/master/img/email_00.png">
 
 **[Back to top](#table-of-contents)**
 
@@ -126,7 +171,7 @@ Due to the fact directives support most of what `.component()` does (template di
 
 #### (The MIT License)
 
-Copyright (c) 2016-2017 Todd Motto
+Copyright (c) 2017 Eliezer Abate
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
