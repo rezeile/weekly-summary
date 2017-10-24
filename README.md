@@ -8,6 +8,9 @@
 
 ---
 
+<img src="https://github.com/rezeile/weekly-summary/blob/master/img/email_1.png">
+
+
 ## Table of Contents
 
 1. [Setup](#setup)
