@@ -1,14 +1,14 @@
 # Weekly Summary
 
+*Last Updated: October 23 2017*
+
 ---
 
 > A Mac OS agent (i.e. user daemon) that reads the [Mac OSX Calender App](https://en.wikipedia.org/wiki/Calendar_(Apple)) and sends a weekly summary to a user's email about how her time was spent.
 
 ---
 
-<img src="https://github.com/rezeile/weekly-summary/blob/master/img/email_0.png">
-
-*Last Updated: October 23 2017*
+<img src="https://github.com/rezeile/weekly-summary/blob/master/img/email_00.png">
 
 ## Table of Contents
 
