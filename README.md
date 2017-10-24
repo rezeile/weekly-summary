@@ -8,17 +8,20 @@
 
 ---
 
+<img src="https://github.com/rezeile/weekly-summary/blob/master/img/email_1.png">
+
+
 ## Table of Contents
 
 1. [Setup](#setup)
     1. [Postfix mail server](#postfix-mail-server)
     1. [Writing a plist file](#writing-a-plist-file)
     1. [Daemon configuration file](#daemon-configuration-file)
-1. [Emailed timelog example](#emailed-timelog-example)
+1. [Weekly Summary Email Example](#weekly-summary-email-example)
 
 ## Setup
 
-`weekly-summary` is a daemon that does not require any user interaction. However it does require a small amount of initial configuration. In particular, it needs to know where to email the summarised timelogs, where to store the email text file on the file system, and how frequently itshould run (i.e. weekly,daily,hourly, etc ...). 
+`weekly-summary` is a daemon that does not require any user interaction. However it does require a small amount of initial configuration. In particular, it needs to know where to email the summarized timelogs, where to store the email text on the file system, and how frequently it should run (i.e. weekly,daily,hourly, etc ...). 
 
 For illustrative purposes, the rest of this document will refer to a fictionalized mail server `mail.bobjones.com` and email address `mail@bobjones.com`.
 
@@ -161,7 +164,7 @@ Here's an example `config.json` entry for Bob Jones:
 
 **[Back to top](#table-of-contents)**
 
-## Emailed timelog example
+## Weekly Summary Email Example
 
 <img src="https://github.com/rezeile/weekly-summary/blob/master/img/email_00.png">
 
@@ -171,7 +174,7 @@ Here's an example `config.json` entry for Bob Jones:
 
 #### (The MIT License)
 
-Copyright (c) 2017 Eliezer Abate
+Copyright (c) 2017 Rezeile
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
