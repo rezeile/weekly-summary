@@ -8,17 +8,15 @@
 
 ---
 
-<img src="https://github.com/rezeile/weekly-summary/blob/master/img/email_00.png">
-
 ## Table of Contents
 
 1. [Setup](#setup)
     1. [Postfix mail server](#postfix-mail-server)
     1. [Writing a plist file](#writing-a-plist-file)
     1. [Daemon configuration file](#daemon-configuration-file)
-1. [Example](#example)
+1. [Emailed timelog example](#emailed-timelog-example)
 
-# Setup
+## Setup
 
 `weekly-summary` is a daemon that does not require any user interaction. However it does require a small amount of initial configuration. In particular, it needs to know where to email the summarised timelogs, where to store the email text file on the file system, and how frequently itshould run (i.e. weekly,daily,hourly, etc ...). 
 
@@ -73,9 +71,9 @@ sudo launchctl start org.postfix.master
 
 ### Writing a plist file
 
-A mac daemon is controlled by service management framework (`launchd`)[https://en.wikipedia.org/wiki/Launchd]. (To view a list of system and user daemons managed by `launchd` run `launchctl list`.)
+A mac daemon is controlled by service management framework [`launchd`](https://en.wikipedia.org/wiki/Launchd). (To view a list of system and user daemons managed by `launchd` run `launchctl list`.)
 
-A property list (extension `.plist`) is an xml file that configures a `launchd` daemon. For our example the property list located in the same directory as the readme is called `local.weeklysummary.plist`.  
+A property list (extension `.plist`) is an xml file that configures a `launchd` daemon. For our example the property list located in the same directory as the readme is called `local.weeklysummary.plist`. This file should be placed at the following directory `~/Library/LaunchAgents` on your Mac.
 
 ```xml
 <?xml version="1.0" encoding="UTF-8"?>
@@ -106,10 +104,18 @@ We will describe some of the key elements of the property file from above.
 <string>local.weeklysummary.plist</string>
 ```
 
-The key `Label` describes the name of the property list which should be unique among system daemons.
+The key `<key>Label</key>` describes the name of the property list which should be unique among system daemons.
 
 ```
 <key>StartCalendarInterval</key>
+<dict>
+      <key>Weekday</key>
+      <integer>6</integer>
+      <key>Hour</key>
+      <integer>23</integer>
+      <key>Minute</key>
+      <integer>59</integer>
+    </dict>
 ```
 
 The second key defines a calendar interval inside a `<dict>...</dict>` which instructs `launchd` when to execute the program. `6` means the sixth day of the week (Saturday), `23` denotes the 23 hour of the day (i.e. 11pm), and `59` denotes the 59th minute of the the hour. Thus this daemon will execute every saturday at 11:59pm.
@@ -119,14 +125,14 @@ The second key defines a calendar interval inside a `<dict>...</dict>` which ins
 <string>/Path/to/executable</string>
 ```
 
-Finally the `<key>Program</key>` last tag defines where the actual executable program is located.
+Lastly the `<key>Program</key>` last tag defines where the actual executable program is located.
 
 
 **[Back to top](#table-of-contents)**
 
 ### Daemon configuration file
 
-Finally we will need a configuration file called `config.json` that will have several properties (JSON keys) that the daemon program will require. A description of the different properties is given below. 
+We will also need a configuration file called `config.json` that will have several properties (JSON keys) that the daemon program will require. This config.json file should be placed in the same location as the daemon executable which is described int the `plist` file above under the `<key>Program</key>` tag. A description of the different properties is given below. 
 
 | Property Name | Description | Example
 |---|---|---|
@@ -155,16 +161,9 @@ Here's an example `config.json` entry for Bob Jones:
 
 **[Back to top](#table-of-contents)**
 
-# Example
-* Use `ui-router` [latest alpha](https://github.com/angular-ui/ui-router) (see the Readme) if you want to support component-routing
-  * Otherwise you're stuck with `template: '<component>'` and no `bindings`/resolve mapping
-* Consider preloading templates into `$templateCache` with `angular-templates` or `ngtemplate-loader`
-  * [Gulp version](https://www.npmjs.com/package/gulp-angular-templatecache)
-  * [Grunt version](https://www.npmjs.com/package/grunt-angular-templates)
-  * [Webpack version](https://github.com/WearyMonkey/ngtemplate-loader)
-* Consider using [Webpack](https://webpack.github.io/) for compiling your ES2015 code and styles
-* Use [ngAnnotate](https://github.com/olov/ng-annotate) to automatically annotate `$inject` properties
-* How to use [ngAnnotate with ES6](https://www.timroes.de/2015/07/29/using-ecmascript-6-es6-with-angularjs-1-x/#ng-annotate)
+## Emailed timelog example
+
+<img src="https://github.com/rezeile/weekly-summary/blob/master/img/email_00.png">
 
 **[Back to top](#table-of-contents)**
 
@@ -172,7 +171,7 @@ Here's an example `config.json` entry for Bob Jones:
 
 #### (The MIT License)
 
-Copyright (c) 2016-2017 Todd Motto
+Copyright (c) 2017 Eliezer Abate
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
