@@ -45,6 +45,9 @@ class Formatter {
         if min == 0 {
             return String(format:"%d:00 ",hour) + h
         }
+        if min < 10 {
+            return String(format: "%d:0%d ",hour,min)
+        }
         return String(format: "%d:%d ",hour,min) + h
     }
     

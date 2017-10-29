@@ -1,3 +1,6 @@
+Build/
+DerivedData
 config.json
 email.txt
 email.sh
+.gitignore
