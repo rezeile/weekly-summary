@@ -7,11 +7,9 @@ class Summarizer {
     var events: [EKEvent] = []
     var config: Config
     var tasks = Set<Task>()
-    var endDate: Date
     
     init(config: Config) {
         self.config = config
-        self.endDate = DateUtil.getEndDate()
     }
     
     func summarize() {
@@ -24,11 +22,13 @@ class Summarizer {
     private func summarizeHandler(accessGranted: Bool, error: Error?) {
         if (accessGranted == true) {
             self.calendars = self.eventStore.calendars(for: EKEntityType.event)
-            let startDate = DateUtil.formattedDate(date: DateUtil.getPreviousWeek(date: self.endDate))
-            let endDate = DateUtil.formattedDate(date: self.endDate)
+            let endDate = Date()
+            let startDate = endDate.addingTimeInterval(-DateUtil.SECONDS_IN_ONE_WEEK)
+            print("Start Date: " + startDate.description(with: Locale.current))
+            print("End Date: " + endDate.description(with: Locale.current))
             self.loadEvents(startDate: startDate, endDate: endDate)
             self.genTasks()
-            Formatter.writeContentToFile(config: self.config, tasks: self.tasks, date: self.endDate)
+            Formatter.writeContentToFile(config: self.config, tasks: self.tasks, date: endDate)
             EmailUtil.send(config: self.config)
         } else {
             print("Calendar Access Denied.");
@@ -56,14 +56,11 @@ class Summarizer {
         }
     }
     
-    private func loadEvents(startDate: String, endDate: String) {
+    private func loadEvents(startDate: Date?, endDate: Date?) {
         let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = DateUtil.getDateFormat()
         
-        let start = dateFormatter.date(from: startDate)
-        let end = dateFormatter.date(from: endDate)
-        
-        if let start = start, let end = end {
+        if let start = startDate, let end = endDate {
             let eventsPredicate = eventStore.predicateForEvents(withStart: start, end: end, calendars: calendars)
             self.events = eventStore.events(matching: eventsPredicate)
         }

@@ -7,11 +7,14 @@ class DateUtil {
                          "October", "November", "December"]
     
     static let daysOfWeek = [1: "S", 2: "M", 3: "T", 4: "W", 5: "T", 6: "F", 7: "S"]
+    static let SECONDS_IN_ONE_WEEK = 604800.0
     
     
     static func getPreviousWeek(date: Date) -> Date {
-        let date: Date = (Calendar.current as NSCalendar).date(byAdding: .day, value: -7, to: date, options: [])!
-        return date.addingTimeInterval(70.0)
+        print("This Week Date: " + date.description)
+        let prevWeekDate: Date = (Calendar.current as NSCalendar).date(byAdding: .day, value: -7, to: date, options: [])!
+        print("Previous Week Date: " + prevWeekDate.description)
+        return prevWeekDate;
     }
     
     static func formattedDate(date: Date) -> String {
@@ -28,18 +31,8 @@ class DateUtil {
     }
     
     static func elapsedHours(startDate: Date, endDate: Date) -> Double {
-        let seconds = endDate.timeIntervalSince(startDate);
+        let seconds = endDate.timeIntervalSince(startDate)
         return seconds / 3600
-    }
-    
-    static func getEndDate() -> Date {
-        var date: Date = Date()
-        let cal = (Calendar.current as NSCalendar)
-        let wdValue = getWeekDay(date: date) == 7 ? 0 : (getWeekDay(date: date) * -1)
-        date = cal.date(byAdding: .weekday, value: wdValue, to: date, options: [])!
-        date = cal.date(byAdding: .hour, value: (23 - getHour(date: date)), to: date, options: [])!
-        date = cal.date(byAdding: .minute, value: (59 - getMinute(date: date)), to: date, options: [])!
-        return date
     }
     
     static func getDayOfWeek(date: Date) -> (Int,String) {
