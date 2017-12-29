@@ -27,9 +27,7 @@ class DateUtil {
     }
     
     static func getPreviousWeek(date: Date) -> Date {
-        print("This Week Date: " + date.description)
         let prevWeekDate: Date = (Calendar.current as NSCalendar).date(byAdding: .day, value: -7, to: date, options: [])!
-        print("Previous Week Date: " + prevWeekDate.description)
         return prevWeekDate;
     }
     

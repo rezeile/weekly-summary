@@ -26,8 +26,6 @@ class Summarizer {
             self.calendars = self.eventStore.calendars(for: EKEntityType.event)
             let startDate = self.dateUtil.getStartDate()
             let endDate = self.dateUtil.getEndDate()
-            print("Start Date: " + startDate.description(with: Locale.current))
-            print("End Date: " + endDate.description(with: Locale.current))
             self.loadEvents(startDate: startDate, endDate: endDate)
             self.genTasks()
             Formatter.writeContentToFile(config: self.config, tasks: self.tasks, date: endDate)
