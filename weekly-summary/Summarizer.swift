@@ -7,9 +7,11 @@ class Summarizer {
     var events: [EKEvent] = []
     var config: Config
     var tasks = Set<Task>()
+    var dateUtil: DateUtil
     
     init(config: Config) {
         self.config = config
+        self.dateUtil = DateUtil()
     }
     
     func summarize() {
@@ -22,8 +24,8 @@ class Summarizer {
     private func summarizeHandler(accessGranted: Bool, error: Error?) {
         if (accessGranted == true) {
             self.calendars = self.eventStore.calendars(for: EKEntityType.event)
-            let endDate = Date()
-            let startDate = endDate.addingTimeInterval(-DateUtil.SECONDS_IN_ONE_WEEK)
+            let startDate = self.dateUtil.getStartDate()
+            let endDate = self.dateUtil.getEndDate()
             print("Start Date: " + startDate.description(with: Locale.current))
             print("End Date: " + endDate.description(with: Locale.current))
             self.loadEvents(startDate: startDate, endDate: endDate)
