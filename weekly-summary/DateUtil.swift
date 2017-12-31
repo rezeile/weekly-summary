@@ -59,7 +59,8 @@ class DateUtil {
     }
     
     static func getWeekOfYear(date: Date) -> String {
-        let weekOfYear = Calendar.current.component(.weekOfYear, from: date)
+        let calendar = Calendar(identifier: Calendar.Identifier.gregorian)
+        let weekOfYear = calendar.component(.weekOfYear, from: date)
         return String(weekOfYear)
     }
     
@@ -68,7 +69,10 @@ class DateUtil {
     }
     
     private static func nearestSaturday(currentDate: Date) -> Date {
+        //print("End (nearest Saturday) Date: " + currentDate.description(with: Locale(identifier: "en_US")))
+
         let wkseconds = getWeekdaySeconds(date: currentDate)
+        //print("Wk seconds: " + wkseconds.description)
         let interval: Int
         if (wkseconds >= NEXT_SATURDAY_THRESHHOLD) {
             interval = STANDARD_END_DATE - wkseconds
@@ -80,11 +84,11 @@ class DateUtil {
     
     private static func getWeekdaySeconds(date: Date) -> Int {
         let calendar = Calendar(identifier: Calendar.Identifier.gregorian)
-        let weekdayOrd = calendar.component(.weekdayOrdinal, from: date)
+        let weekdayOrd = calendar.component(.weekday, from: date)
         let hour = calendar.component(.hour, from: date)
         let min = calendar.component(.minute, from: date)
         let second = calendar.component(.second, from: date)
-        return (weekdayOrd * 24 * 3600) + (hour * 3600) + (min * 60) + second
+        return ((weekdayOrd - 1) * 24 * 3600) + (hour * 3600) + (min * 60) + second
     }
     
     private static func oneWeekBefore(endDate: Date) -> Date {
