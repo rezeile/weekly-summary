@@ -4,3 +4,4 @@ config.json
 email.txt
 email.sh
 .gitignore
+weekly-summary.xcodeproj
